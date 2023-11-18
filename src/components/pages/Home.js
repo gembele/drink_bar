@@ -2,12 +2,10 @@ import React from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import EntypoIcons from 'react-native-vector-icons/Entypo';
-import DrinkButton from '../DrinkButton';
+import DrinkButton from '../utility/DrinkButton';
+
 
 export default function Home({navigation}) {
-
-    
-      
   return (
     <View style={styles.container}>
       <View style={styles.title}>

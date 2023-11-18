@@ -1,16 +1,18 @@
 import React from 'react'
-import { TouchableOpacity, StyleSheet, Text } from 'react-native'
+import { TouchableOpacity, StyleSheet, Text,FlatList } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function DrinkButton() {
+  const drinkList = useSelector(state => state.drinks);
 
   const sendDataToArduino = async (message) => {
     try {
       const response = await fetch('http://192.168.0.115', {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain', // Zmiana na typ 'text/plain'
+          'Content-Type': 'text/plain',
         },
-        body: String(message), // Wysłanie samej wiadomości tekstowej
+        body: String(message),
       });
       
       if (response.ok) {
@@ -29,39 +31,25 @@ export default function DrinkButton() {
     }
     
   };
-
-  const listOfDrinks = [
-    {
-      id: 1,
-      name: "Drink1"
-    },
-    {
-      id: 2,
-      name: "Drink2"
-    },
-    {
-      id: 3,
-      name: "Drink3"
-    },
-    {
-      id: 4,
-      name: "Drink4"
-    }
-  ];
   return (
 
-    listOfDrinks.map((drink) => {
-      return(
-        <TouchableOpacity 
-          style={styles.drink} 
-          onPress={() => sendDataToArduino(drink.id)}
-        >
-          <Text style={styles.text2}>{drink.name}</Text>
-        </TouchableOpacity>
+        <FlatList
+        data={drinkList}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, index }) => {
+          return (
+            <TouchableOpacity 
+              style={styles.drink} 
+              onPress={() => sendDataToArduino(item.id)}
+            >
+                <Text style={styles.text2}>{item.drinkName}</Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
+        
       );
-    })
-  )
-}
+      }
 
 const styles = StyleSheet.create({
   text2: {
