@@ -1,19 +1,22 @@
-export const ADD_DRINK = "ADD_DRINK";
-export const REMOVE_DRINK = "REMOVE_DRINK";
+export const RESET_DRINKS = 'RESET_DRINKS';
+export const RESET_ONE = 'RESET_ONE';
+export const EDIT_DRINK = 'EDIT_DRINK';
 
-let drinkID = 1;
-
-export const addDrink = drinkName => ({
-  type: ADD_DRINK,
+export const editDrink = (drinkId, updatedDrinkData) => ({
+  type: EDIT_DRINK,
   payload: {
-    id: drinkID++,
-    drinkName
-  }
+    drinkId,
+    updatedDrinkData,
+  },
 });
 
-export const removeDrink = id => ({
-  type: REMOVE_DRINK,
+export const resetOne = id => ({
+  type: RESET_ONE,
   payload: {
     id
   }
+});
+
+export const resetDrinks = () => ({
+  type: RESET_DRINKS,
 });

@@ -1,28 +1,31 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import EntypoIcons from 'react-native-vector-icons/Entypo';
 import DrinkButton from '../utility/DrinkButton';
 
 
 export default function Home({navigation}) {
   return (
-    <View style={styles.container}>
-      <View style={styles.title}>
-        <Text style={styles.title_text}>Pick a drink</Text>
-      </View>
-      <EntypoIcons name="drink" size={200} color="#f8ca12"/>
-      <ScrollView>
-        <DrinkButton/>
-      </ScrollView>
+    <>
+      <SafeAreaView style={styles.title}>
+          <Text style={styles.title_text}>Pick a drink</Text>
+      </SafeAreaView>
+      <View style={styles.container}>
+        
+        {/* <EntypoIcons name="drink" size={200} color="#f8ca12"/> */}
+        <View>
+          <DrinkButton/>
+        </View>
 
-      <StatusBar style="auto" />
-    </View>
+        <StatusBar style="auto" />
+      </View>
+    </>
+    
   )
 }
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: '#032845',
       alignItems: 'center',
       justifyContent: 'center',
@@ -32,6 +35,7 @@ const styles = StyleSheet.create({
       fontSize: 50,
     },
     title: {
+      backgroundColor: '#011f3b',
       width: '100%',
       height: 100,
       alignItems: 'center',

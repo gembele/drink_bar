@@ -1,45 +1,46 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, FlatList, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { addDrink, removeDrink } from '../redux/action';
+import { editDrink, resetDrinks } from '../redux/action';
 
 export default function Recipes() {
   const [drink, setDrink] = useState('');
   const drinkList = useSelector(state => state.drinks);
   const dispatch = useDispatch();
 
-  const handleAddDrinks = () => {
-    dispatch(addDrink(drink));
-    setDrink('');
+  const handleReset = () => {
+    dispatch(resetDrinks());
   };
-  const handleRemoveDrinks = (id) => {
-    dispatch(removeDrink(id));
-    setDrink('');
+
+  const handleEdit = (drinkID) => {
+    dispatch(editDrink(drinkID, {drinkName:'Edited Name'}));
   }
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        mode="outlined"
-        label="Drink"
-        value={drink}
-        onChangeText={drink => setDrink(drink)}
-      />
-      <Button title='Add' color="#841584" onPress={handleAddDrinks} />
+    <>
+    <View style={styles.title}>
+      <Text style={styles.title_text}>Edit Your Drinks</Text>
+    </View>
+      <View style={styles.container}>
+      <TouchableOpacity style={styles.btn} onPress={handleReset}>
+        <Text style={styles.text}>RESET</Text>
+      </TouchableOpacity>
       <FlatList
-        data={drinkList}
+        data={drinkList.sort((a, b) => a.id - b.id)}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => {
           return (
-            <TouchableOpacity style={styles.btn} onPress={() => handleRemoveDrinks(item.id)}>
+            <TouchableOpacity style={styles.drink} onPress={() => handleEdit(item.id)}>
                 <Text style={styles.list}>{item.drinkName}</Text>
             </TouchableOpacity>
             
           );
         }}
       />
+      
     </View>
+    </>
+    
   )
 }
 
@@ -49,23 +50,52 @@ const styles = StyleSheet.create({
     backgroundColor: '#032845',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 60,
   },
-  btn: {
-    height: 20,
-    width: 200,
-    border: '2px solid black'
+  drink: {
+    margin: 10,
+    borderColor: '#011f30',
+    backgroundColor: '#011f3b',
+    borderWidth: 0,
+    paddingTop: 10,
+    paddingBottom: 10,
+    width: 350,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.43,
+    shadowRadius: 9.51,
+
+    elevation: 15,
   },
   text: {
     color: 'white',
     fontSize: 50,
   },
   title: {
-    marginTop: 20,
-    marginBottom: 20,
+    backgroundColor: '#011f3b',
     width: '100%',
-    height: 50,
+    height: 100,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderColor: '#fff',
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity:  0.16,
+    shadowRadius: 1.51,
+    elevation: 2
+  },
+  title_text: {
+    color: "#f8ca12",
+    fontSize: 30,
   },
   input: {
     height: 40,
@@ -80,4 +110,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white'
   },
+  btn: {
+    width: 200,
+    height: 50,
+    backgroundColor: 'red',
+    marginTop: 50,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  text: {
+    fontSize: 20,
+    color: 'white'
+  }
 });

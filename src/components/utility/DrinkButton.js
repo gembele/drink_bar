@@ -1,13 +1,15 @@
 import React from 'react'
-import { TouchableOpacity, StyleSheet, Text,FlatList } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text,FlatList, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 export default function DrinkButton() {
   const drinkList = useSelector(state => state.drinks);
+  const allEmpty = drinkList.every(item => item.drinkName === 'empty');
+
 
   const sendDataToArduino = async (message) => {
     try {
-      const response = await fetch('http://192.168.0.115', {
+      const response = await fetch('http://192.168.162.236', {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain',
@@ -31,16 +33,26 @@ export default function DrinkButton() {
     }
     
   };
-  return (
 
+  if (allEmpty) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text2} >Seems like you haven't added any drinks yet. </Text>
+        <Text style={styles.text2} >Go to Recipes page and add some.</Text>
+      </View>
+      
+    );
+  }
+  return (
         <FlatList
-        data={drinkList}
+        data={drinkList.sort((a, b) => a.id - b.id)}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => {
           return (
             <TouchableOpacity 
-              style={styles.drink} 
+              style={item.drinkName !='empty' ? styles.drink : styles.disabledDrink} 
               onPress={() => sendDataToArduino(item.id)}
+              disabled = {item.drinkName ==='empty'} 
             >
                 <Text style={styles.text2}>{item.drinkName}</Text>
             </TouchableOpacity>
@@ -55,7 +67,15 @@ const styles = StyleSheet.create({
   text2: {
     color: '#f8ca12',
     fontSize: 30,
+    textAlign: 'center'
     },
+  container: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 75
+  },
   drink: {
       margin: 10,
       borderColor: '#011f30',
@@ -76,6 +96,10 @@ const styles = StyleSheet.create({
       shadowRadius: 9.51,
 
       elevation: 15,
+    },
+    disabledDrink: {
+      width: 0,
+      height: 0
     }
   });
   
