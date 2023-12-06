@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import ResetButton from '../utility/ResetButton';
+import IngredientsButton from '../utility/IngredientsButton';
 
 
 export default function Settings({navigation}) {
@@ -15,7 +16,7 @@ export default function Settings({navigation}) {
               size={150}
               color="#f8ca12"/>
       </View>
-
+      <IngredientsButton/>
       <ResetButton/>
 
 

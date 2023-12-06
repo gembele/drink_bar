@@ -6,7 +6,7 @@ export default function InitialSetup() {
   return (
     <View style={styles.container}>
         <Text style={styles.text2} >Seems like you haven't added any drinks yet. </Text>
-        <Text style={styles.text2} >Go to Recipes page and add some.</Text>
+        <Text style={styles.text2} >Add some ingredients in Settings first</Text>
       </View>
   )
 }

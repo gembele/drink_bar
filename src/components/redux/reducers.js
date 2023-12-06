@@ -1,6 +1,12 @@
-import { EDIT_DRINK, RESET_DRINKS, RESET_ONE } from "./action";
+import { EDIT_DRINK, RESET_DRINKS, RESET_ONE, EDIT_INGR } from "./action";
 
 const initialState = {
+    ingredients: [
+        {key:1, value: 'empty'},
+        {key:2, value: 'empty'},
+        {key:3, value: 'empty'},
+        {key:4, value: 'empty'},
+    ],
     drinks: [
         {id:1, drinkName:'empty', type: 'single', ingredients:[], isExpanded: false },
         {id:2, drinkName:'empty', type: 'single', ingredients:[], isExpanded: false },
@@ -24,10 +30,17 @@ const drinkReducer = (state = initialState, action) => {
                     drink.id === action.payload.drinkId ? { ...drink, ...action.payload.updatedDrinkData } : drink
                 ),
                 };
+            case EDIT_INGR:
+                return {
+                ...state,
+                ingredients: state.ingredients.map((ingredient) => 
+                ingredient.id === action.payload.ingredientId ? { ...ingredient, ...action.payload.updatedIngredientData } : ingredient),
+                }; 
             case RESET_DRINKS:
                 return {
                     ...state,
                     drinks: initialState.drinks,
+                    ingredients: initialState.ingredients
                 };
             case RESET_ONE:
                 return {

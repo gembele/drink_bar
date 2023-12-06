@@ -1,13 +1,13 @@
 import React, { useState} from 'react';
-import { StyleSheet, View, TouchableOpacity, Animated, Text, FlatList, TextInput, Button } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, TextInput, Button } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { editDrink } from '../redux/action';
 
 export const EditButton = () => {
     const [name, setName] = useState('');
     const [newIngredient, setNewIngredient] = useState('');
-    const [height] = useState(new Animated.Value(0));
     const drinkList = useSelector(state => state.drinks);
+    const ingredientsList = useSelector(state => state.ingredients);
     const dispatch = useDispatch();
 
     const handleExpand = (drinkID) => {
@@ -34,7 +34,11 @@ export const EditButton = () => {
               {item.isExpanded && <View>
                 <Text style={styles.list}>NAME</Text>
                 <TextInput onChangeText={name => setName(name)} placeholder='Name' placeholderTextColor={'white'} style={styles.input} />
-
+                {ingredientsList.map(function(item){
+                  return (
+                    <Text>{item.value}</Text>
+                  )
+                })}
                 <Text style={styles.list}>edit edit ingredient</Text>
                 <Text style={styles.list}>add ingredient if</Text>
                 <Text style={styles.list}>apply changes button</Text>
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
       paddingBottom: 60,
     },
     drink: {
-      margin: 10,
+      marginTop: 10,
       borderColor: '#011f30',
       backgroundColor: '#011f3b',
       borderWidth: 0,
@@ -82,10 +86,12 @@ const styles = StyleSheet.create({
     drinkView: {
         height: 80,
         width: 350,
+        marginBottom: 10,
     },
     drinkView2: {
         height: 400,
         width: 350,
+        marginBottom: 10,
     },
     input: {
       height: 40,
