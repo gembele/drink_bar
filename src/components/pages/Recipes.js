@@ -1,43 +1,17 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, FlatList, TextInput, Button, TouchableOpacity } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { editDrink, resetDrinks } from '../redux/action';
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { EditButton } from '../utility/EditButton';
 
 export default function Recipes() {
-  const [drink, setDrink] = useState('');
-  const drinkList = useSelector(state => state.drinks);
-  const dispatch = useDispatch();
-
-  const handleReset = () => {
-    dispatch(resetDrinks());
-  };
-
-  const handleEdit = (drinkID) => {
-    dispatch(editDrink(drinkID, {drinkName:'Edited Name'}));
-  }
-
+  
   return (
     <>
     <View style={styles.title}>
       <Text style={styles.title_text}>Edit Your Drinks</Text>
     </View>
-      <View style={styles.container}>
-      <TouchableOpacity style={styles.btn} onPress={handleReset}>
-        <Text style={styles.text}>RESET</Text>
-      </TouchableOpacity>
-      <FlatList
-        data={drinkList.sort((a, b) => a.id - b.id)}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => {
-          return (
-            <TouchableOpacity style={styles.drink} onPress={() => handleEdit(item.id)}>
-                <Text style={styles.list}>{item.drinkName}</Text>
-            </TouchableOpacity>
-            
-          );
-        }}
-      />
-      
+
+    <View style={styles.container}>        
+      <EditButton/>
     </View>
     </>
     
@@ -121,5 +95,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: 'white'
-  }
+  },
+  toggle: {
+    width: 100,
+    height: 30,
+    backgroundColor: "blue",
+    justifyContent: "center",
+    alignItems: "center"
+  },
 });

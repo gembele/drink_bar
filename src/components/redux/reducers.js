@@ -2,15 +2,17 @@ import { EDIT_DRINK, RESET_DRINKS, RESET_ONE } from "./action";
 
 const initialState = {
     drinks: [
-        {id:1, drinkName:'Coca-Cola', type: 'single', ingredients:['Coca-Cola'] },
-        {id:2, drinkName:'Sprite', type: 'single', ingredients:['Sprite'] },
-        {id:3, drinkName:'Apple Juice', type: 'single', ingredients:['Apple Juice'] },
-        {id:4, drinkName:'Peach Juice', type: 'single', ingredients:['Peach Juice'] },
-        {id:5, drinkName:'Mix 1', type: 'mix', ingredients:['Apple Juice', 'Peach Juice'] },
-        {id:6, drinkName:'Mix 2', type: 'mix', ingredients:['Coca-Cola', 'Apple Juice'] },
-        {id:7, drinkName:'empty', type: 'mix', ingredients:[] },
-        {id:8, drinkName:'empty', type: 'mix', ingredients:[] },
-    ]
+        {id:1, drinkName:'empty', type: 'single', ingredients:[], isExpanded: false },
+        {id:2, drinkName:'empty', type: 'single', ingredients:[], isExpanded: false },
+        {id:3, drinkName:'empty', type: 'single', ingredients:[], isExpanded: false },
+        {id:4, drinkName:'empty', type: 'single', ingredients:[], isExpanded: false },
+        {id:5, drinkName:'empty', type: '1+2', ingredients:[], isExpanded: false },
+        {id:6, drinkName:'empty', type: '1+3', ingredients:[], isExpanded: false },
+        {id:7, drinkName:'empty', type: '1+4', ingredients:[], isExpanded: false },
+        {id:8, drinkName:'empty', type: '2+3', ingredients:[], isExpanded: false },
+        {id:9, drinkName:'empty', type: '2+4', ingredients:[], isExpanded: false },
+        {id:10, drinkName:'empty', type: '3+4', ingredients:[], isExpanded: false },
+    ],
 };
 
 const drinkReducer = (state = initialState, action) => {
@@ -33,6 +35,7 @@ const drinkReducer = (state = initialState, action) => {
                     drinks: state.drinks.map((drink) =>
                     drink.id === action.payload ? {...drink, initialState}: drink),
                 };
+            
         default: 
             return state;
     }

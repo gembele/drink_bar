@@ -1,21 +1,22 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
-import EntypoIcons from 'react-native-vector-icons/Entypo';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import DrinkButton from '../utility/DrinkButton';
+import InitialSetup from '../utility/InitialSetup';
+import { useSelector } from 'react-redux';
 
 
 export default function Home({navigation}) {
+  const drinkList = useSelector(state => state.drinks);
+  const checkedDrinks = drinkList.every(drink => drink.drinkName === 'empty');
   return (
     <>
       <SafeAreaView style={styles.title}>
           <Text style={styles.title_text}>Pick a drink</Text>
       </SafeAreaView>
       <View style={styles.container}>
-        
-        {/* <EntypoIcons name="drink" size={200} color="#f8ca12"/> */}
         <View>
-          <DrinkButton/>
+          {!checkedDrinks ? <DrinkButton/> : <InitialSetup/> }
         </View>
 
         <StatusBar style="auto" />

@@ -2,6 +2,7 @@ export const RESET_DRINKS = 'RESET_DRINKS';
 export const RESET_ONE = 'RESET_ONE';
 export const EDIT_DRINK = 'EDIT_DRINK';
 
+
 export const editDrink = (drinkId, updatedDrinkData) => ({
   type: EDIT_DRINK,
   payload: {
@@ -20,3 +21,4 @@ export const resetOne = id => ({
 export const resetDrinks = () => ({
   type: RESET_DRINKS,
 });
+
