@@ -1,13 +1,14 @@
 import React, { useState} from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, TextInput, Button } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { SelectList } from 'react-native-dropdown-select-list'
 import { editDrink } from '../redux/action';
 
 export const EditButton = () => {
     const [name, setName] = useState('');
-    const [newIngredient, setNewIngredient] = useState('');
     const drinkList = useSelector(state => state.drinks);
     const ingredientsList = useSelector(state => state.ingredients);
+    const [selected, setSelected] = React.useState("");
     const dispatch = useDispatch();
 
     const handleExpand = (drinkID) => {
@@ -33,16 +34,12 @@ export const EditButton = () => {
               </TouchableOpacity>
               {item.isExpanded && <View>
                 <Text style={styles.list}>NAME</Text>
-                <TextInput onChangeText={name => setName(name)} placeholder='Name' placeholderTextColor={'white'} style={styles.input} />
-                {ingredientsList.map(function(item){
-                  return (
-                    <Text>{item.value}</Text>
-                  )
-                })}
+                <TextInput onChangeText={name => setName(name)} style={styles.input} />
                 <Text style={styles.list}>edit edit ingredient</Text>
+                
                 <Text style={styles.list}>add ingredient if</Text>
                 <Text style={styles.list}>apply changes button</Text>
-                <Button onPress={() => submitChange(item.id)} title='Apply' />
+                <Button onPress={() => submitChange(item.id)} title='Apply' disabled={name===''} />
 
               </View>}
             </View>

@@ -1,27 +1,19 @@
-import React, {useState, useCallback} from 'react';
-import { Button, Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
+import React, {useState} from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { useSelector, useDispatch } from 'react-redux';
 import { editIngredient } from '../redux/action';
 
 export default function IngredientsButton() {
     const [expanded, setExpanded] = useState(false);
     const [name, setName] = useState('');
-    const [selected, setSelected] = React.useState("");
     const ingredientsList = useSelector(state => state.ingredients);
     const dispatch = useDispatch();
 
-    const submitChange = useCallback(
-        (ingredientID, value) => {
-          dispatch(editIngredient(ingredientID, { value }));
-          console.log('Added successfully');
-        },
-        [dispatch]
-      );
-    
-      const handleApply = () => {
-        submitChange(selected, name);
-      };
+    const submitChange = (ingredientID) => {
+      dispatch(editIngredient(ingredientID, { ingredientName: name }));
+      console.log('Added successfully');
+    }
 
   return (
     <View style={expanded ? styles.ingrView : styles.ingrView2}>
@@ -29,13 +21,19 @@ export default function IngredientsButton() {
             <Text style={styles.text}>Edit Ingredients</Text>
         </TouchableOpacity>
         {!expanded && <View>
-            <SelectList 
-                setSelected={(val) => setSelected(val)} 
-                data={ingredientsList} 
-                save="key"
-            />
-            <TextInput onChangeText={name => setName(name)} placeholder={selected.toString()} placeholderTextColor={'white'} style={styles.input} />
-            <Button onPress={handleApply} title="Apply" />
+          {ingredientsList.map(function(item){
+                  return (
+                    <View style={styles.container}>
+                      <TextInput placeholder={item.ingredientName} placeholderTextColor={'white'} style={styles.input} onChangeText={name => setName(name)}/>
+                      <TouchableOpacity onPress={()=>{submitChange(item.id)}}>
+                        <SimpleLineIcons
+                          name="check"
+                          size={25}
+                          color="#f8ca12"/>
+                      </TouchableOpacity>
+                    </View>
+                  )
+                })}
         </View>}
     </View>
     
@@ -45,10 +43,11 @@ export default function IngredientsButton() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#032845',
         alignItems: 'center',
         justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'row',
       },
     btn: {
         margin: 0,
@@ -81,6 +80,7 @@ const styles = StyleSheet.create({
     },
     input: {
       height: 40,
+      width: 200,
       margin: 12,
       borderWidth: 1,
       padding: 10,

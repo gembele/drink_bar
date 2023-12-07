@@ -2,10 +2,10 @@ import { EDIT_DRINK, RESET_DRINKS, RESET_ONE, EDIT_INGR } from "./action";
 
 const initialState = {
     ingredients: [
-        {key:1, value: 'empty'},
-        {key:2, value: 'empty'},
-        {key:3, value: 'empty'},
-        {key:4, value: 'empty'},
+        {id:1, ingredientName: 'empty'},
+        {id:2, ingredientName: 'empty'},
+        {id:3, ingredientName: 'empty'},
+        {id:4, ingredientName: 'empty'},
     ],
     drinks: [
         {id:1, drinkName:'empty', type: 'single', ingredients:[], isExpanded: false },
