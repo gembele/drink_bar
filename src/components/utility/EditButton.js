@@ -1,14 +1,12 @@
 import React, { useState} from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList, TextInput, Button } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { SelectList } from 'react-native-dropdown-select-list'
 import { editDrink } from '../redux/action';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 export const EditButton = () => {
     const [name, setName] = useState('');
     const drinkList = useSelector(state => state.drinks);
-    const ingredientsList = useSelector(state => state.ingredients);
-    const [selected, setSelected] = React.useState("");
     const dispatch = useDispatch();
 
     const handleExpand = (drinkID) => {
@@ -30,17 +28,23 @@ export const EditButton = () => {
           return (
             <View style={!item.isExpanded? styles.drinkView : styles.drinkView2}>
               <TouchableOpacity style={styles.drink} onPress={() => {handleExpand(item.id)}}>
-                <Text style={styles.list}>{item.drinkName}</Text>
+                <Text style={styles.list}>{item.id}. {item.drinkName}</Text>
+                <Text style={styles.ingredients}>Ingredients: {item.ingredients.join(', ')}</Text>
               </TouchableOpacity>
-              {item.isExpanded && <View>
-                <Text style={styles.list}>NAME</Text>
-                <TextInput onChangeText={name => setName(name)} style={styles.input} />
-                <Text style={styles.list}>edit edit ingredient</Text>
+              {item.isExpanded && <View style={styles.edit}>
+                <View style={{width:'100%'}}>
+                  <Text style={styles.list}>NAME</Text>
+                </View>
+                <View style={{flexDirection: 'row', width:'100%'}}>
+                  <TextInput onChangeText={name => setName(name)} style={styles.input} />
+                  <TouchableOpacity onPress={()=>{submitChange(item.id)}}  disabled={name===''} style={{top:16}}>
+                          <SimpleLineIcons
+                            name="check"
+                            size={30}
+                            color="#f8ca12"/>
+                  </TouchableOpacity>
+                </View>
                 
-                <Text style={styles.list}>add ingredient if</Text>
-                <Text style={styles.list}>apply changes button</Text>
-                <Button onPress={() => submitChange(item.id)} title='Apply' disabled={name===''} />
-
               </View>}
             </View>
             
@@ -86,22 +90,38 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     drinkView2: {
-        height: 400,
+        height: 175,
         width: 350,
         marginBottom: 10,
     },
+    edit: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    ingredients: {
+        fontSize: 12,
+        color: 'white',
+        marginBottom: 15
+    },  
     input: {
       height: 40,
+      width: '80%',
       margin: 12,
       borderWidth: 1,
+      borderColor: 'white',
+      backgroundColor: 'white',
       padding: 10,
-      color: 'white',
+      color: 'black',
     },
     list: {
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-        color: 'white'
+        color: 'white',
+        marginTop: 5
       },
     text: {
       color: 'white',
