@@ -5,12 +5,13 @@ import { useSelector } from 'react-redux';
 
 export default function InitialSetup() {
   const ingredientsList = useSelector(state => state.ingredients);
+  const drinkList = useSelector(state => state.drinks);
   const ingredientsEmpty = ingredientsList.some(item => item.ingredientName === 'empty');
+  const drinksEmpty = drinkList.some(item => item.drinkName === 'empty');
   return (
     <View style={styles.container}>
         <Text style={styles.text2} >There is no drinks yet. </Text>
-        {ingredientsEmpty && <Text style={styles.text2} >Add ingredients in Settings first</Text>}
-        <Text style={styles.text2} >Go to Recipes page and add names</Text>
+        {ingredientsEmpty && drinksEmpty && <Text style={styles.text2} >Add ingredients in Settings first</Text>}
       </View>
   )
 }

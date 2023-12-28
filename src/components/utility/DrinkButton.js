@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TouchableOpacity, StyleSheet, Text,FlatList, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 export default function DrinkButton() {
   const drinkList = useSelector(state => state.drinks);
   const allEmpty = drinkList.every(item => item.drinkName === 'empty');
+  const [isWorking, setIsWorking] = useState(false);
 
 
   const sendDataToArduino = async (message) => {
     try {
-      const response = await fetch('http://192.168.162.236', {
+      const response = await fetch('http://192.168.126.236', {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain',
@@ -25,7 +26,10 @@ export default function DrinkButton() {
         console.error('Wystąpił błąd podczas wysyłania wiadomości.');
       }
       const responseData = await response.text(); // Odczytaj odpowiedź jako tekst
-
+      while(!responseData) {
+        setIsWorking(true);
+      } 
+      setIsWorking(false);
       console.log('Odebrano odpowiedź od Arduino:', responseData);
 
     } catch (error) {
@@ -52,7 +56,7 @@ export default function DrinkButton() {
             <TouchableOpacity 
               style={item.drinkName !='empty' ? styles.drink : styles.disabledDrink} 
               onPress={() => sendDataToArduino(item.id)}
-              disabled = {item.drinkName ==='empty'} 
+              disabled = {item.drinkName ==='empty' || isWorking} 
             >
                 <Text style={styles.text2}>{item.drinkName}</Text>
             </TouchableOpacity>
